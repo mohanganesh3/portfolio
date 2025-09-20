@@ -116,7 +116,7 @@ const experience = [
     company: "Kasolco",
     period: "05/2025 - 07/2025",
     description:
-      "Engineered multiple enterprise-grade AI solutions including retail vision analytics, multi-agent healthcare systems, and medical imaging platforms with breakthrough performance improvements.",
+      "Developed AI solutions for retail analytics, healthcare applications, and fitness chatbots.",
     keyContributions: [
       {
         title: "AI Retail Shelf Vision Analytics System",
@@ -124,6 +124,7 @@ const experience = [
           "Engineered an enterprise-grade AI retail shelf vision analytics system for Vi-John cosmetics company, transforming a failed 67% accuracy project into a production-ready solution, achieving 95% accuracy (100% in optimal conditions). Implemented breakthrough multi-modal architecture: custom YOLOv10 trained on 11GB SKU-110K dataset → hybrid ResNet-34 + OCR embeddings (0.7:0.3 ratio) → FAISS similarity search → real-time product classification with automated gap detection, enabling automated inventory management and eliminating manual shelf auditing.",
         tech: ["YOLOv10", "ResNet-34", "FAISS", "OCR", "Computer Vision", "SKU-110K Dataset"],
         impact: "95% accuracy (100% in optimal conditions), eliminated manual shelf auditing",
+        github: "https://github.com/mohanganesh3/AI-Retail-Shelf-Vision-Analytics",
       },
       {
         title: "Multi-Agent Fitness AI Chatbot",
@@ -131,6 +132,7 @@ const experience = [
           "Engineered a multi-agent AI chatbot for a fitness application using Google Gemini LLM with 5 specialised agents (Chief Strategist, Health Knowledge Council, Plan Generator, User Profile, Mental Wellness) and ThreadPoolExecutor parallel processing, achieving 3x response time improvement. Developed full-stack solution with FastAPI backend and React.js frontend, implementing Pydantic models for structured diet plan (daily meals with calorie/macro breakdowns) and fitness plans (weekly exercises with sets/reps/rest periods) tailored to specific user profiles, goals, and preferences.",
         tech: ["Google Gemini", "Multi-Agent Systems", "FastAPI", "React.js", "ThreadPoolExecutor", "Pydantic"],
         impact: "3x response time improvement, personalized health planning",
+        github: "https://github.com/mohanganesh3/PersonalizedFitnessDietPlanner",
       },
       {
         title: "Healthcare AI Applications Suite",
@@ -138,6 +140,11 @@ const experience = [
           "Contributed to multiple healthcare AI applications during internship: developed HealthAdvisorAI-POC using quantised LLaMA-3.2-1B with FastAPI and prompt engineering for clinical recommendations; built ClarityScan medical imaging platform with Google Genkit for X-ray/MRI/ultrasound diagnostics featuring confidence scoring and heatmap visualisations; created Health & Wellbeing AI Companion using LangChain multi-agent framework and Google Gemini for personalised BMI calculations, stress assessment, fitness planning, and mental wellness support. Implemented RESTful APIs, conversation memory management, and real-time processing capabilities across all three healthcare AI solutions.",
         tech: ["LLaMA-3.2-1B", "Google Genkit", "LangChain", "Medical Imaging", "RESTful APIs", "Real-time Processing"],
         impact: "Comprehensive healthcare AI suite with clinical-grade accuracy",
+        github: [
+          "https://github.com/mohanganesh3/HealthAdvisorAI-POC",
+          "https://github.com/mohanganesh3/AI-in-Medical-Imaging",
+          "https://github.com/mohanganesh3/health-wellbeing-ai-agent"
+        ],
       },
     ],
     certificate: "https://drive.google.com/file/d/1uLqvL8xz0MdkTmFdlA2ke-9UZ7qyLSAY/view",
@@ -147,8 +154,14 @@ const experience = [
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("hero")
   const [isVisible, setIsVisible] = useState(false)
+  const [projectFilter, setProjectFilter] = useState("All")
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
+
+  const projectCategories = ["All", "AI/ML", "ML"]
+  const filteredProjects = projectFilter === "All" 
+    ? projects 
+    : projects.filter(project => project.category === projectFilter)
 
   useEffect(() => {
     setIsVisible(true)
@@ -162,7 +175,7 @@ export default function Portfolio() {
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 glass-effect"
+        className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-accent/20"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
@@ -173,21 +186,48 @@ export default function Portfolio() {
               className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
               whileHover={{ scale: 1.05 }}
             >
-              Portfolio
+              <motion.span
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                Portfolio
+              </motion.span>
             </motion.div>
             <div className="hidden md:flex space-x-8">
-              {["Experience", "Projects", "Skills", "Contact"].map((item) => (
+              {["Experience", "Projects", "Skills", "Contact"].map((item, index) => (
                 <motion.button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
-                  className="text-foreground hover:text-accent transition-colors duration-300"
+                  className="relative text-foreground hover:text-accent transition-colors duration-300 px-3 py-2 rounded-lg group"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {item}
+                  <motion.div
+                    className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"
+                    whileHover={{ width: "100%" }}
+                  />
                 </motion.button>
               ))}
             </div>
+            
+            {/* Mobile menu - Enhanced */}
+            <motion.button
+              className="md:hidden p-2 rounded-lg bg-accent/10 hover:bg-accent/20 transition-colors"
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                // Add mobile menu toggle logic here
+                console.log('Mobile menu toggle')
+              }}
+            >
+              <div className="w-6 h-0.5 bg-accent mb-1 transition-all"></div>
+              <div className="w-6 h-0.5 bg-accent mb-1 transition-all"></div>
+              <div className="w-6 h-0.5 bg-accent transition-all"></div>
+            </motion.button>
           </div>
         </div>
       </motion.nav>
@@ -206,15 +246,7 @@ export default function Portfolio() {
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            <motion.div
-              className="w-48 h-48 mx-auto rounded-full bg-gradient-to-br from-accent to-secondary p-1 animate-glow"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <div className="w-full h-full rounded-full bg-background flex items-center justify-center text-lg font-medium text-accent border-2 border-dashed border-accent/30">
-                Your Photo Here
-              </div>
-            </motion.div>
+
 
             <div className="space-y-4">
               <motion.h1
@@ -242,8 +274,6 @@ export default function Portfolio() {
                 transition={{ duration: 1, delay: 1 }}
               >
                 B.Tech Computer Science (Honors) from IIIT SriCity | CGPA: 9.5/10
-                <br />
-                Specializing in Generative AI, Computer Vision, NLP, and Full-Stack Development
               </motion.p>
             </div>
 
@@ -259,6 +289,21 @@ export default function Portfolio() {
                 onClick={() => scrollToSection("experience")}
               >
                 View Experience <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
+                onClick={() => {
+                  // Download resume functionality
+                  const resumeUrl = "/MOHAN_GANESH.pdf"; // Resume in public folder
+                  const link = document.createElement('a');
+                  link.href = resumeUrl;
+                  link.download = 'Mohan_Ganesh_Resume.pdf';
+                  link.click();
+                }}
+              >
+                Download Resume <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button
                 size="lg"
@@ -335,88 +380,228 @@ export default function Portfolio() {
               Professional Experience
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Enterprise-grade AI solutions with breakthrough performance improvements and real-world impact
+              Professional experience developing AI/ML solutions
             </p>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             {experience.map((exp, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="relative"
+                className="relative mb-12"
               >
-                <Card className="glass-effect hover:shadow-2xl transition-all duration-500 mb-8">
-                  <CardHeader>
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                      <div>
-                        <CardTitle className="text-3xl flex items-center gap-3">
-                          <Briefcase className="h-8 w-8 text-accent" />
-                          {exp.title}
-                        </CardTitle>
-                        <CardDescription className="text-xl font-semibold text-accent mt-2">
-                          {exp.company} | {exp.period}
-                        </CardDescription>
-                      </div>
-                      <Button variant="outline" size="lg" asChild>
-                        <a href={exp.certificate} target="_blank" rel="noopener noreferrer">
-                          <Award className="h-5 w-5 mr-2" />
-                          View Certificate
-                        </a>
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-8">
-                    <p className="text-lg text-muted-foreground leading-relaxed">{exp.description}</p>
-
-                    <div className="space-y-6">
-                      <h3 className="text-2xl font-bold text-accent flex items-center gap-2">
-                        <Target className="h-6 w-6" />
-                        Key Contributions & Projects
-                      </h3>
-
-                      <div className="grid gap-6">
-                        {exp.keyContributions.map((contribution, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: i * 0.1 }}
-                            viewport={{ once: true }}
-                            className="bg-card/50 rounded-lg p-6 border border-accent/20"
-                          >
-                            <div className="space-y-4">
-                              <div className="flex items-start gap-3">
-                                <Zap className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
-                                <div className="space-y-2">
-                                  <h4 className="text-xl font-bold text-accent">{contribution.title}</h4>
-                                  <p className="text-muted-foreground leading-relaxed">{contribution.description}</p>
-                                </div>
-                              </div>
-
-                              <div className="flex flex-wrap gap-2">
-                                {contribution.tech.map((tech, techIndex) => (
-                                  <Badge key={techIndex} variant="secondary" className="text-xs">
-                                    {tech}
-                                  </Badge>
-                                ))}
-                              </div>
-
-                              <div className="flex items-center gap-2 text-sm">
-                                <TrendingUp className="h-4 w-4 text-green-500" />
-                                <span className="font-semibold text-green-500">Impact:</span>
-                                <span className="text-muted-foreground">{contribution.impact}</span>
+                {/* Professional Experience Card */}
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
+                  className="group"
+                >
+                  <Card className="glass-effect hover:shadow-2xl transition-all duration-500 border-l-4 border-l-accent relative overflow-hidden bg-gradient-to-r from-card/95 to-card/90">
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    <CardHeader className="pb-6 relative z-10">
+                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                        <div className="flex-1">
+                          {/* Job Title */}
+                          <div className="flex items-center gap-4 mb-3">
+                            <motion.div
+                              className="p-3 bg-accent/10 rounded-xl border border-accent/20"
+                              whileHover={{ scale: 1.1, rotate: 5 }}
+                              transition={{ duration: 0.3 }}
+                            >
+                              <Briefcase className="h-7 w-7 text-accent" />
+                            </motion.div>
+                            <div>
+                              <CardTitle className="text-2xl lg:text-3xl font-bold text-foreground mb-1">
+                                {exp.title}
+                              </CardTitle>
+                              <div className="flex items-center gap-3 text-lg">
+                                <span className="font-semibold text-accent">{exp.company}</span>
+                                <span className="text-muted-foreground">•</span>
+                                <span className="text-muted-foreground font-medium">{exp.period}</span>
                               </div>
                             </div>
-                          </motion.div>
-                        ))}
+                          </div>
+
+                          {/* Description */}
+                          <motion.p
+                            className="text-muted-foreground leading-relaxed text-base lg:text-lg"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            viewport={{ once: true }}
+                          >
+                            {exp.description}
+                          </motion.p>
+                        </div>
+
+                        {/* Certificate Button */}
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="self-start"
+                        >
+                          <Button 
+                            variant="outline" 
+                            size="lg" 
+                            asChild
+                            className="border-accent/30 text-accent hover:bg-accent/10 hover:border-accent shadow-md backdrop-blur-sm"
+                          >
+                            <a href={exp.certificate} target="_blank" rel="noopener noreferrer">
+                              <Award className="h-5 w-5 mr-3" />
+                              View Certificate
+                              <ExternalLink className="h-4 w-4 ml-2" />
+                            </a>
+                          </Button>
+                        </motion.div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardHeader>
+
+                    <CardContent className="pt-0 relative z-10">
+                      {/* Key Contributions Section */}
+                      <div className="space-y-6">
+                        <motion.div
+                          className="flex items-center gap-3 pb-3 border-b border-accent/20"
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.6 }}
+                          viewport={{ once: true }}
+                        >
+                          <Target className="h-6 w-6 text-accent" />
+                          <h3 className="text-xl lg:text-2xl font-bold text-foreground">
+                            Key Contributions & Projects
+                          </h3>
+                        </motion.div>
+
+                        {/* Contributions Grid */}
+                        <div className="grid gap-6">
+                          {exp.keyContributions.map((contribution, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ opacity: 0, y: 30 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.6, delay: i * 0.1 }}
+                              viewport={{ once: true }}
+                              whileHover={{ scale: 1.02 }}
+                              className="group/contribution"
+                            >
+                              <div className="bg-gradient-to-r from-card to-card/90 rounded-xl p-6 border border-accent/10 hover:border-accent/30 transition-all duration-300 hover:shadow-lg">
+                                {/* Project Header */}
+                                <div className="flex items-start gap-4 mb-4">
+                                  <motion.div
+                                    className="p-2 bg-accent/10 rounded-lg"
+                                    whileHover={{ rotate: 360 }}
+                                    transition={{ duration: 0.6 }}
+                                  >
+                                    <Zap className="h-5 w-5 text-accent" />
+                                  </motion.div>
+                                  <div className="flex-1">
+                                    <h4 className="text-lg lg:text-xl font-bold text-accent mb-2 group-hover/contribution:text-foreground transition-colors">
+                                      {contribution.title}
+                                    </h4>
+                                    <p className="text-muted-foreground leading-relaxed text-sm lg:text-base">
+                                      {contribution.description}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                {/* Tech Stack */}
+                                <div className="mb-4">
+                                  <div className="flex flex-wrap gap-2">
+                                    {contribution.tech.map((tech, techIndex) => (
+                                      <motion.div
+                                        key={techIndex}
+                                        initial={{ scale: 0 }}
+                                        whileInView={{ scale: 1 }}
+                                        transition={{ duration: 0.3, delay: techIndex * 0.05 }}
+                                        viewport={{ once: true }}
+                                        whileHover={{ scale: 1.05 }}
+                                      >
+                                        <Badge 
+                                          variant="secondary" 
+                                          className="text-xs bg-accent/10 text-accent hover:bg-accent/20 transition-colors border border-accent/20"
+                                        >
+                                          {tech}
+                                        </Badge>
+                                      </motion.div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* Impact and GitHub */}
+                                <div className="space-y-3">
+                                  <motion.div
+                                    className="flex items-start gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+                                    whileHover={{ scale: 1.02 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                                    <div className="text-sm">
+                                      <span className="font-semibold text-green-700 dark:text-green-300">Impact: </span>
+                                      <span className="text-green-600 dark:text-green-400">{contribution.impact}</span>
+                                    </div>
+                                  </motion.div>
+
+                                  {/* GitHub Repository Link(s) */}
+                                  {contribution.github && (
+                                    <motion.div
+                                      whileHover={{ scale: 1.02 }}
+                                      whileTap={{ scale: 0.98 }}
+                                      className="space-y-2"
+                                    >
+                                      {Array.isArray(contribution.github) ? (
+                                        // Multiple GitHub repositories
+                                        <div className="grid grid-cols-1 gap-2">
+                                          {contribution.github.map((githubUrl, githubIndex) => {
+                                            const repoName = githubUrl.split('/').pop() || `Repository ${githubIndex + 1}`;
+                                            return (
+                                              <Button 
+                                                key={githubIndex}
+                                                variant="outline" 
+                                                size="sm" 
+                                                asChild
+                                                className="w-full border-accent/30 text-accent hover:bg-accent/10 hover:border-accent shadow-sm backdrop-blur-sm"
+                                              >
+                                                <a href={githubUrl} target="_blank" rel="noopener noreferrer">
+                                                  <Github className="h-4 w-4 mr-2" />
+                                                  {repoName}
+                                                  <ExternalLink className="h-3 w-3 ml-2" />
+                                                </a>
+                                              </Button>
+                                            );
+                                          })}
+                                        </div>
+                                      ) : (
+                                        // Single GitHub repository
+                                        <Button 
+                                          variant="outline" 
+                                          size="sm" 
+                                          asChild
+                                          className="w-full border-accent/30 text-accent hover:bg-accent/10 hover:border-accent shadow-sm backdrop-blur-sm"
+                                        >
+                                          <a href={contribution.github} target="_blank" rel="noopener noreferrer">
+                                            <Github className="h-4 w-4 mr-2" />
+                                            View Repository
+                                            <ExternalLink className="h-3 w-3 ml-2" />
+                                          </a>
+                                        </Button>
+                                      )}
+                                    </motion.div>
+                                  )}
+                                </div>
+                              </div>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -424,8 +609,47 @@ export default function Portfolio() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20">
-        <div className="container mx-auto px-6">
+      <section id="projects" className="py-20 relative overflow-hidden">
+        {/* Sophisticated animated background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/3 to-secondary/3" />
+        <div className="absolute inset-0 opacity-20">
+          <motion.div
+            className="absolute top-20 left-10 w-32 h-32 bg-accent/20 rounded-full blur-xl"
+            animate={{ 
+              x: [0, 100, 0], 
+              y: [0, 50, 0],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-20 right-10 w-24 h-24 bg-secondary/20 rounded-full blur-xl"
+            animate={{ 
+              x: [0, -80, 0], 
+              y: [0, -40, 0],
+              scale: [1, 0.8, 1]
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute top-1/2 left-1/3 w-16 h-16 bg-primary/15 rounded-full blur-lg"
+            animate={{ 
+              rotate: [0, 360],
+              scale: [1, 1.5, 1]
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
+        
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(139, 92, 246, 0.3) 1px, transparent 0)`,
+            backgroundSize: '50px 50px'
+          }} />
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -433,63 +657,186 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Personal Projects
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Innovative AI/ML projects and full-stack applications showcasing cutting-edge technologies
-            </p>
+            <motion.div
+              className="inline-flex items-center gap-3 mb-4"
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <motion.div
+                whileInView={{ scale: 1 }}
+                initial={{ scale: 0.8 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Brain className="w-8 h-8 text-accent" />
+              </motion.div>
+              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Personal Projects
+              </h2>
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Code className="w-8 h-8 text-accent" />
+              </motion.div>
+            </motion.div>
+            <motion.p
+              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              Personal projects and applications
+            </motion.p>
+
+            {/* Project Filter */}
+            <motion.div
+              className="flex justify-center gap-2 mt-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+            >
+              {projectCategories.map((category) => (
+                <motion.button
+                  key={category}
+                  onClick={() => setProjectFilter(category)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    projectFilter === category
+                      ? "bg-accent text-accent-foreground shadow-md"
+                      : "bg-card hover:bg-accent/10 text-muted-foreground hover:text-accent border border-accent/20"
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {category}
+                </motion.button>
+              ))}
+            </motion.div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+            {filteredProjects.map((project, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ scale: 1.05, rotateY: 5 }}
-                className="perspective-1000"
+                className="perspective-1000 group"
               >
-                <Card className="h-full glass-effect hover:shadow-2xl transition-all duration-500 transform-style-3d">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-2">
-                      <CardTitle className="text-xl leading-tight">{project.title}</CardTitle>
-                    </div>
-                    <Badge variant="secondary" className="w-fit">
-                      {project.category}
-                    </Badge>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground leading-relaxed text-sm">{project.description}</p>
-
-                    <div className="flex flex-wrap gap-1">
-                      {project.tech.map((tech, i) => (
-                        <Badge key={i} variant="outline" className="text-xs">
-                          {tech}
+                <motion.div
+                  whileHover={{ 
+                    y: -10,
+                    rotateY: 2,
+                    scale: 1.02
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="transform-style-3d h-full"
+                >
+                  <Card className="h-full glass-effect hover:shadow-2xl transition-all duration-500 border border-accent/20 relative overflow-hidden group-hover:border-accent/40 bg-gradient-to-br from-card/95 to-card/90">
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    <CardHeader className="relative z-10 pb-4">
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <CardTitle className="text-lg font-bold leading-tight flex items-start gap-2 group-hover:text-accent transition-colors duration-300">
+                          <motion.div
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.5 }}
+                            className="mt-0.5"
+                          >
+                            <Code className="w-4 h-4 text-accent flex-shrink-0" />
+                          </motion.div>
+                          <span className="flex-1">{project.title}</span>
+                        </CardTitle>
+                      </div>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
+                        className="self-start"
+                      >
+                        <Badge 
+                          variant="secondary" 
+                          className="bg-accent/10 text-accent border-accent/20 hover:bg-accent/20 transition-colors"
+                        >
+                          {project.category}
                         </Badge>
-                      ))}
-                    </div>
+                      </motion.div>
+                    </CardHeader>
+                    
+                    <CardContent className="space-y-4 relative z-10 pt-0">
+                      <p className="text-muted-foreground leading-relaxed text-sm line-clamp-3">
+                        {project.description}
+                      </p>
 
-                    <div className="flex gap-2 pt-2">
-                      <Button size="sm" variant="outline" asChild>
-                        <a href={project.github} target="_blank" rel="noopener noreferrer">
-                          <Github className="h-4 w-4 mr-2" />
-                          Code
-                        </a>
-                      </Button>
-                      {project.demo && (
-                        <Button size="sm" asChild>
-                          <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-4 w-4 mr-2" />
-                            Demo
-                          </a>
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
+                      {/* Tech Stack */}
+                      <div className="space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                          {project.tech.map((tech, i) => (
+                            <motion.div
+                              key={i}
+                              initial={{ scale: 0, opacity: 0 }}
+                              whileInView={{ scale: 1, opacity: 1 }}
+                              transition={{ duration: 0.3, delay: i * 0.05 }}
+                              viewport={{ once: true }}
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <Badge 
+                                variant="outline" 
+                                className="text-xs bg-muted/50 hover:bg-accent/10 hover:border-accent/30 transition-colors"
+                              >
+                                {tech}
+                              </Badge>
+                            </motion.div>
+                          ))}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-2 pt-2 border-t border-accent/10">
+                          <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="flex-1"
+                          >
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              asChild 
+                              className="w-full border-accent/30 text-accent hover:bg-accent/10 hover:border-accent transition-all duration-300"
+                            >
+                              <a href={project.github} target="_blank" rel="noopener noreferrer">
+                                <Github className="h-3 w-3 mr-2" />
+                                Code
+                              </a>
+                            </Button>
+                          </motion.div>
+                          {project.demo && (
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="flex-1"
+                            >
+                              <Button 
+                                size="sm" 
+                                asChild
+                                className="w-full bg-accent hover:bg-accent/90 text-accent-foreground shadow-md"
+                              >
+                                <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                                  <ExternalLink className="h-3 w-3 mr-2" />
+                                  Demo
+                                </a>
+                              </Button>
+                            </motion.div>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -512,8 +859,17 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20">
-        <div className="container mx-auto px-6">
+      <section id="skills" className="py-20 bg-muted/30 relative">
+        {/* Animated background grid */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+                             linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px',
+          }} />
+        </div>
+        
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -521,12 +877,28 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Technical Skills
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <motion.div
+              className="inline-flex items-center gap-3 mb-4"
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <Brain className="w-8 h-8 text-accent" />
+              <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Technical Skills
+              </h2>
+              <Cpu className="w-8 h-8 text-accent" />
+            </motion.div>
+            <motion.p
+              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
               Comprehensive expertise across AI/ML, full-stack development, and modern technologies
-            </p>
+            </motion.p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -537,42 +909,56 @@ export default function Portfolio() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ scale: 1.05 }}
+                className="group"
               >
-                <Card className="h-full glass-effect hover:shadow-2xl transition-all duration-500">
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      {category === "Programming Languages" && <Code className="h-5 w-5 text-accent" />}
-                      {category === "Generative AI" && <Brain className="h-5 w-5 text-accent" />}
-                      {category === "AI Engineering" && <Cpu className="h-5 w-5 text-accent" />}
-                      {category === "Computer Vision & NLP" && <Eye className="h-5 w-5 text-accent" />}
-                      {category === "Full-Stack Development" && <Code className="h-5 w-5 text-accent" />}
-                      {category === "DevOps & Databases" && <Database className="h-5 w-5 text-accent" />}
-                      {category}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {skillList.map((skill, i) => (
+                <motion.div
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Card className="h-full glass-effect hover:shadow-2xl transition-all duration-500 border border-accent/20 relative overflow-hidden bg-gradient-to-br from-card/95 to-card/90 group-hover:border-accent/40">
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    <CardHeader className="relative z-10">
+                      <CardTitle className="text-lg flex items-center gap-3 group-hover:text-accent transition-colors duration-300">
                         <motion.div
-                          key={skill}
-                          initial={{ opacity: 0, scale: 0 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.3, delay: i * 0.05 }}
-                          viewport={{ once: true }}
-                          whileHover={{ scale: 1.1 }}
+                          className="p-2 bg-accent/10 rounded-lg"
+                          whileHover={{ rotate: 360, scale: 1.1 }}
+                          transition={{ duration: 0.5 }}
                         >
-                          <Badge
-                            variant="secondary"
-                            className="hover:bg-accent hover:text-accent-foreground transition-colors"
-                          >
-                            {skill}
-                          </Badge>
+                          {category === "Programming Languages" && <Code className="h-5 w-5 text-accent" />}
+                          {category === "Generative AI" && <Brain className="h-5 w-5 text-accent" />}
+                          {category === "AI Engineering" && <Cpu className="h-5 w-5 text-accent" />}
+                          {category === "Computer Vision & NLP" && <Eye className="h-5 w-5 text-accent" />}
+                          {category === "Full-Stack Development" && <Code className="h-5 w-5 text-accent" />}
+                          {category === "DevOps & Databases" && <Database className="h-5 w-5 text-accent" />}
                         </motion.div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                        <span className="font-bold">{category}</span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="relative z-10">
+                      <div className="flex flex-wrap gap-2">
+                        {skillList.map((skill, i) => (
+                          <motion.div
+                            key={skill}
+                            initial={{ opacity: 0, scale: 0 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.3, delay: i * 0.05 }}
+                            viewport={{ once: true }}
+                            whileHover={{ scale: 1.05, y: -2 }}
+                          >
+                            <Badge
+                              variant="secondary"
+                              className="bg-accent/10 text-accent hover:bg-accent hover:text-accent-foreground transition-all duration-300 border border-accent/20 hover:border-accent shadow-sm"
+                            >
+                              {skill}
+                            </Badge>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </motion.div>
             ))}
           </div>
