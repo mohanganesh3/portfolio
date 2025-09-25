@@ -295,8 +295,9 @@ export default function Portfolio() {
                 variant="outline"
                 className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
                 onClick={() => {
-                  // Download resume functionality
-                  const resumeUrl = "/MohanGaneshResume.pdf"; // Resume in public folder
+                  // Download resume functionality with cache busting
+                  const timestamp = new Date().getTime();
+                  const resumeUrl = `/MohanGaneshResume.pdf?v=${timestamp}`; // Cache busting parameter
                   const link = document.createElement('a');
                   link.href = resumeUrl;
                   link.download = 'MohanGaneshResume.pdf';
