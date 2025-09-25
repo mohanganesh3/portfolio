@@ -296,10 +296,10 @@ export default function Portfolio() {
                 className="border-accent text-accent hover:bg-accent hover:text-accent-foreground bg-transparent"
                 onClick={() => {
                   // Download resume functionality
-                  const resumeUrl = "/MOHAN_GANESH.pdf"; // Resume in public folder
+                  const resumeUrl = "/MohanGaneshResume.pdf"; // Resume in public folder
                   const link = document.createElement('a');
                   link.href = resumeUrl;
-                  link.download = 'Mohan_Ganesh_Resume.pdf';
+                  link.download = 'MohanGaneshResume.pdf';
                   link.click();
                 }}
               >
