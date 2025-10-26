@@ -273,7 +273,7 @@ export default function Portfolio() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 1 }}
               >
-                B.Tech Computer Science (Honors) from IIIT SriCity | CGPA: 9.5/10
+                B.Tech Computer Science (Honors) from IIIT SriCity | CGPA: 9.46/10
               </motion.p>
             </div>
 
@@ -1061,7 +1061,7 @@ export default function Portfolio() {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     {[
-                      { label: "CGPA", value: "9.5/10", icon: GraduationCap },
+                      { label: "CGPA", value: "9.46/10", icon: GraduationCap },
                       { label: "Projects Completed", value: "15+", icon: Code },
                       { label: "Technologies Mastered", value: "25+", icon: Cpu },
                       { label: "AI Models Deployed", value: "10+", icon: Brain },
